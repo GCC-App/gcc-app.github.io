@@ -1,7 +1,3 @@
-<html>
-<head>
-<style>
-
 * {
   box-sizing: border-box;
 }
@@ -188,7 +184,4 @@ a.link:active {
   content: "";
   clear: both;
   display: table;
-}
-</style>
-</head>
-</html>
+}}}
