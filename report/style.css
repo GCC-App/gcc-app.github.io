@@ -1,0 +1,24 @@
+/*
+  Language: CSS
+  IDE: IntelliJ IDEA Flutter Plugin
+  File: style.css
+  Assigned To: All
+  Requirements: Final Report Package
+  Purpose: This is the style sheet for the website in the final report package.
+*/
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Times New Roman, serif;
+    padding: 10px;
+    background: #04AA6D;
+}
+
+.header {
+    padding: 30px;
+    text-align: center;
+    background: white;
+}
