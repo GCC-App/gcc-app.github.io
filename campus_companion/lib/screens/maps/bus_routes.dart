@@ -1,183 +1,104 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BusRoutesScreen extends StatefulWidget {
   const BusRoutesScreen({super.key});
 
   @override
-  State<BusRoutesScreen> createState() =>
-      _BusRoutesScreenState();
+  State<BusRoutesScreen> createState() => _BusRoutesScreenState();
 }
 
 class _BusRoutesScreenState extends State<BusRoutesScreen> {
-  bool showMap = false;
+  String selectedRoute = 'Kennesaw/Marietta Route';
 
-  final List<Map<String, dynamic>> stops = [
-    {
-      'name': 'Student Recreation and Activities Center',
-      'campus': 'Kennesaw Campus',
-      'position': const LatLng(34.0368, -84.5820),
-    },
-    {
-      'name': 'The Commons',
-      'campus': 'Kennesaw Campus',
-      'position': const LatLng(34.0399, -84.5820),
-    },
-    {
-      'name': 'Joe Mack Wilson Student Center',
-      'campus': 'Marietta Campus',
-      'position': const LatLng(33.9406, -84.5204),
-    },
-  ];
+  final Uri liveTrackerUrl =
+      Uri.parse('https://kennesawstate.passiogo.com');
 
-  Marker buildStopMarker(Map<String, dynamic> stop) {
-    return Marker(
-      point: stop['position'] as LatLng,
-      width: 220,
-      height: 70,
-      child: GestureDetector(
-        onTap: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (sheetContext) {
-              return SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        stop['name'] as String,
-                        style: Theme.of(sheetContext)
-                            .textTheme
-                            .titleLarge,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(stop['campus'] as String),
-                      const SizedBox(height: 16),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pop(sheetContext);
-                          },
-                          child: const Text('Close'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+  final Map<String, Map<String, dynamic>> routes = {
+    'Kennesaw/Marietta Route': {
+      'description': 'Connects Kennesaw Campus and Marietta Campus.',
+      'hours': 'Mon–Thu: 7:00 AM–11:30 PM\n'
+          'Friday: 7:00 AM–7:00 PM\n'
+          'Saturday: 12:00 PM–7:00 PM',
+      'stops': [
+        {'name': 'The Commons', 'campus': 'Kennesaw Campus'},
+        {
+          'name': 'KSU Bookstore/Rec Center',
+          'campus': 'Kennesaw Campus',
         },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.location_on,
-              color: Colors.red,
-              size: 34,
-            ),
-            Flexible(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 5,
-                  vertical: 2,
-                ),
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surface,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  stop['name'] as String,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 10),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildRouteMap() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    showMap = false;
-                  });
-                },
-                icon: const Icon(Icons.arrow_back),
-                tooltip: 'Back to bus route information',
-              ),
-              const Expanded(
-                child: Text(
-                  'Kennesaw/Marietta Shuttle Stops',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: FlutterMap(
-            options: const MapOptions(
-              initialCenter: LatLng(33.9895, -84.5515),
-              initialZoom: 11,
-            ),
-            children: [
-              TileLayer(
-                urlTemplate:
-                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName:
-                    'com.gccapp.campuscompanion',
-              ),
-              MarkerLayer(
-                markers: stops
-                    .map((stop) => buildStopMarker(stop))
-                    .toList(),
-              ),
-              RichAttributionWidget(
-                attributions: [
-                  TextSourceAttribution(
-                    'OpenStreetMap contributors',
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        {
+          'name': 'Marietta Student Center',
+          'campus': 'Marietta Campus',
+        },
       ],
-    );
+    },
+    'Kennesaw Loop Route': {
+      'description': 'Circulates around Kennesaw Campus.',
+      'hours': 'Mon–Thu: 7:00 AM–11:00 PM\n'
+          'Friday: 7:00 AM–7:00 PM',
+      'stops': [
+        {
+          'name': 'KSU Bookstore/Rec Center',
+          'campus': 'Kennesaw Campus',
+        },
+        {'name': 'The Commons', 'campus': 'Kennesaw Campus'},
+        {'name': 'North Residential', 'campus': 'Kennesaw Campus'},
+        {'name': 'Marietta Drive', 'campus': 'Kennesaw Campus'},
+      ],
+    },
+    'Marietta Loop Route': {
+      'description': 'Circulates around Marietta Campus.',
+      'hours': 'Monday–Friday: 7:30 AM–6:00 PM',
+      'stops': [
+        {
+          'name': 'Shore Innovation Center',
+          'campus': 'Marietta Campus',
+        },
+        {
+          'name': 'University Courtyard',
+          'campus': 'Marietta Campus',
+        },
+        {'name': 'Hornet Village', 'campus': 'Marietta Campus'},
+        {'name': 'Shuttle Lot', 'campus': 'Marietta Campus'},
+        {
+          'name': 'University Columns',
+          'campus': 'Marietta Campus',
+        },
+        {'name': 'Hornet Hub', 'campus': 'Marietta Campus'},
+      ],
+    },
+  };
+
+  Future<void> _openLiveTracker() async {
+    try {
+      final launched = await launchUrl(
+        liveTrackerUrl,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not open the live shuttle tracker.'),
+          ),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not open the live shuttle tracker.'),
+          ),
+        );
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (showMap) {
-      return Scaffold(
-        body: SafeArea(
-          child: buildRouteMap(),
-        ),
-      );
-    }
+    final route = routes[selectedRoute]!;
+    final stops = route['stops'] as List<Map<String, String>>;
 
     return Scaffold(
       body: ListView(
@@ -189,10 +110,40 @@ class _BusRoutesScreenState extends State<BusRoutesScreen> {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Explore shuttle connections between '
-            'Kennesaw Campus and Marietta Campus.',
+            'Select a shuttle route to view its stops and service hours.',
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: _openLiveTracker,
+              icon: const Icon(Icons.directions_bus),
+              label: const Text('Open Live Shuttle Map'),
+            ),
+          ),
+          const SizedBox(height: 20),
+          DropdownButtonFormField<String>(
+            value: selectedRoute,
+            decoration: const InputDecoration(
+              labelText: 'Select Route',
+              border: OutlineInputBorder(),
+            ),
+            isExpanded: true,
+            items: routes.keys.map((routeName) {
+              return DropdownMenuItem<String>(
+                value: routeName,
+                child: Text(routeName),
+              );
+            }).toList(),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() {
+                  selectedRoute = value;
+                });
+              }
+            },
+          ),
+          const SizedBox(height: 20),
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -200,47 +151,40 @@ class _BusRoutesScreenState extends State<BusRoutesScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Kennesaw/Marietta Route',
+                    selectedRoute,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Connects Kennesaw Campus and '
-                    'Marietta Campus.',
+                  Text(route['description'] as String),
+                  const SizedBox(height: 16),
+                  const Divider(),
+                  Text(
+                    'Stops (${stops.length})',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const Divider(height: 24),
-                  const ListTile(
-                    leading: Icon(Icons.location_on),
-                    title: Text(
-                      'Student Recreation and Activities Center',
-                    ),
-                    subtitle: Text('Kennesaw Campus'),
-                  ),
-                  const ListTile(
-                    leading: Icon(Icons.location_on),
-                    title: Text('The Commons'),
-                    subtitle: Text('Kennesaw Campus'),
-                  ),
-                  const ListTile(
-                    leading: Icon(Icons.location_on),
-                    title: Text('Joe Mack Wilson Student Center'),
-                    subtitle: Text('Marietta Campus'),
+                  ...stops.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final stop = entry.value;
+
+                    return ListTile(
+                      leading: CircleAvatar(
+                        child: Text('${index + 1}'),
+                      ),
+                      title: Text(stop['name']!),
+                      subtitle: Text(stop['campus']!),
+                    );
+                  }),
+                  const Divider(),
+                  Text(
+                    'Service Hours',
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Stop coordinates are preliminary. '
-                    'Confirm stop locations and schedules '
-                    'with official KSU shuttle information.',
-                  ),
+                  Text(route['hours'] as String),
                   const SizedBox(height: 12),
-                  FilledButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        showMap = true;
-                      });
-                    },
-                    icon: const Icon(Icons.map),
-                    label: const Text('Bus Route Map'),
+                  const Text(
+                    'Schedules may change. Check the official KSU '
+                    'shuttle tracker for current service information.',
                   ),
                 ],
               ),
