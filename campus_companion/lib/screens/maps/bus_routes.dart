@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BusRoutesScreen extends StatefulWidget {
@@ -22,13 +23,16 @@ class _BusRoutesScreenState extends State<BusRoutesScreen> {
           'Friday: 7:00 AM–7:00 PM\n'
           'Saturday: 12:00 PM–7:00 PM',
       'stops': [
-        {'name': 'The Commons', 'campus': 'Kennesaw Campus'},
         {
-          'name': 'KSU Bookstore/Rec Center',
+          'name': 'Rec Center',
           'campus': 'Kennesaw Campus',
         },
         {
-          'name': 'Marietta Student Center',
+          'name': 'The Commons',
+          'campus': 'Kennesaw Campus',
+        },
+        {
+          'name': 'Joe Mack Wilson Student Center',
           'campus': 'Marietta Campus',
         },
       ],
@@ -38,34 +42,33 @@ class _BusRoutesScreenState extends State<BusRoutesScreen> {
       'hours': 'Mon–Thu: 7:00 AM–11:00 PM\n'
           'Friday: 7:00 AM–7:00 PM',
       'stops': [
-        {
-          'name': 'KSU Bookstore/Rec Center',
-          'campus': 'Kennesaw Campus',
-        },
+        {'name': 'Rec Center', 'campus': 'Kennesaw Campus'},
         {'name': 'The Commons', 'campus': 'Kennesaw Campus'},
         {'name': 'North Residential', 'campus': 'Kennesaw Campus'},
-        {'name': 'Marietta Drive', 'campus': 'Kennesaw Campus'},
+        {'name': 'Summit Complex', 'campus': 'Kennesaw Campus'},
       ],
     },
+    
     'Marietta Loop Route': {
       'description': 'Circulates around Marietta Campus.',
       'hours': 'Monday–Friday: 7:30 AM–6:00 PM',
       'stops': [
         {
-          'name': 'Shore Innovation Center',
+          'name': 'Shore Center',
           'campus': 'Marietta Campus',
         },
         {
-          'name': 'University Courtyard',
+          'name': 'Hornet Village',
           'campus': 'Marietta Campus',
         },
-        {'name': 'Hornet Village', 'campus': 'Marietta Campus'},
-        {'name': 'Shuttle Lot', 'campus': 'Marietta Campus'},
         {
           'name': 'University Columns',
           'campus': 'Marietta Campus',
         },
-        {'name': 'Hornet Hub', 'campus': 'Marietta Campus'},
+        {
+          'name': 'Hornet Hub',
+          'campus': 'Marietta Campus',
+        },
       ],
     },
   };
@@ -93,6 +96,303 @@ class _BusRoutesScreenState extends State<BusRoutesScreen> {
         );
       }
     }
+  }
+
+  
+  Widget _buildStopsMap() {
+    final isIntercampus = selectedRoute == 'Kennesaw/Marietta Route';
+    final isKennesaw = selectedRoute == 'Kennesaw Loop Route';
+    final isMarietta = selectedRoute == 'Marietta Loop Route';
+
+    final markers = <Marker>[];
+
+    if (isKennesaw) {
+      markers.addAll([
+        Marker(
+          point: const LatLng(34.039665, -84.582461),
+          width: 140,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'The Commons',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Marker(
+          point: const LatLng(34.037324, -84.582509),
+          width: 150,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'Rec Center',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Marker(
+          point: const LatLng(34.041554, -84.584234),
+          width: 150,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'North Residential',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Marker(
+          point: const LatLng(34.034328, -84.584639),
+          width: 150,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'Summit Complex',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]);
+    }
+
+    
+    if (isMarietta) {
+      markers.addAll([
+        Marker(
+          point: const LatLng(33.940158, -84.518710),
+          width: 140,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'Shore Center',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Marker(
+          point: const LatLng(33.936106, -84.521328),
+          width: 140,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'Hornet Village',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Marker(
+          point: const LatLng(33.935716, -84.525040),
+          width: 150,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'University Columns',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Marker(
+          point: const LatLng(33.939415, -84.522074),
+          width: 140,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'Hornet Hub',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]);
+    }
+
+    
+    if (isIntercampus) {
+      markers.addAll([
+        Marker(
+          point: const LatLng(34.037324, -84.582509),
+          width: 150,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'Rec Center',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Marker(
+          point: const LatLng(34.039665, -84.582461),
+          width: 140,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'The Commons',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Marker(
+          point: const LatLng(33.941024, -84.519898),
+          width: 190,
+          height: 65,
+          child: const Column(
+            children: [
+              Icon(Icons.location_on, color: Colors.red, size: 32),
+              Flexible(
+                child: Text(
+                  'Joe Mack Wilson Student Center',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]);
+    }
+
+
+    final center = isIntercampus
+        ? const LatLng(33.9900, -84.5700)
+        : isMarietta
+            ? const LatLng(33.9406, -84.5204)
+            : const LatLng(34.0385, -84.5828);
+
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Stop Locations',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Markers show available reference locations only. '
+          'They do not represent the actual shuttle path.',
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 320,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: FlutterMap(
+              key: ValueKey(selectedRoute),
+              options: MapOptions(
+                initialCenter: center,
+                initialZoom: isIntercampus ? 11 : isMarietta ? 15 : 16,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName:
+                      'com.gccapp.campuscompanion',
+                ),
+                MarkerLayer(markers: markers),
+                RichAttributionWidget(
+                  attributions: [
+                    TextSourceAttribution('OpenStreetMap contributors'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -181,7 +481,10 @@ class _BusRoutesScreenState extends State<BusRoutesScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(route['hours'] as String),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 20),
+                  const Divider(),
+                  _buildStopsMap(),
+                  const SizedBox(height: 16),
                   const Text(
                     'Schedules may change. Check the official KSU '
                     'shuttle tracker for current service information.',
