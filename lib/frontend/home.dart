@@ -1,5 +1,17 @@
+/*
+  Language: Dart
+  IDE: IntelliJ IDEA Flutter Plugin
+  File: home.dart
+  Assigned To: Colby
+  Requirements: 6.1 Home Page
+  Purpose: This is the first screen that is run by main.dart. All other
+  screens are accessed from this starting point.
+*/
+
+
 import "package:flutter/material.dart";
 import "package:campus_companion/frontend/features.dart";
+import "package:campus_companion/frontend/settings.dart";
 
 
 class HomeScreen extends StatelessWidget {
@@ -11,19 +23,34 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(title: const Text("Home Screen")),
 
         body: Center(
+          child: Column(
+            children: [
 
-            child: ElevatedButton(
+              ElevatedButton(
+                  child: const Text("Features"),
 
-                child: const Text("Features"),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (context) => const FeaturesScreen(),
+                      ),
+                    );
+                  }
+              ),
+
+              ElevatedButton(
+                child: const Text("Settings"),
 
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (context) => const FeaturesScreen(),
+                      builder: (context) => const SettingsScreen(),
                     ),
                   );
                 }
-            )
+              )
+            ]
+          )
         )
     );
   }
