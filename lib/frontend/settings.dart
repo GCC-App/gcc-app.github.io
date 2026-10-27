@@ -20,6 +20,8 @@ class SettingsScreen extends StatefulWidget {
 
 class SettingsScreenState extends State<SettingsScreen> {
 
+  bool isSwitchedDarkMode = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,17 +31,36 @@ class SettingsScreenState extends State<SettingsScreen> {
         child: Column(
 
           children: [
+            Text("TODO: Clear User Data Button",
+                style:
+                  stylesController.titleStyle?.copyWith(color: Colors.red)),
+            Text("Enable Dark Mode:",
+                style: stylesController.titleStyle),
+
+            Switch(
+
+              value: isSwitchedDarkMode,
+
+              onChanged: (bool newValue) {
+                setState(() {
+                  stylesController.isDarkMode(newValue);
+                  isSwitchedDarkMode = newValue;
+                });
+              },
+            ),
+
+            Text("Change Contrast Level:",
+                style: stylesController.titleStyle),
 
             Slider(
 
-              value: AppStyles.contrastLevel,
+              value: stylesController.contrastLevel,
               min: AppStyles.minContrastLevel,
               max: AppStyles.maxContrastLevel,
-              label: AppStyles.contrastLevel.toStringAsFixed(2),
 
               onChanged: (double newValue) {
                 setState(() {
-                  updateContrast(newValue);
+                  stylesController.updateContrast(newValue);
                 });
               }
             )

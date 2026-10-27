@@ -10,8 +10,7 @@
 
 
 import "package:flutter/material.dart";
-import "package:campus_companion/frontend/features.dart";
-import "package:campus_companion/frontend/settings.dart";
+import "package:campus_companion/backend/nav.dart";
 
 
 class HomeScreen extends StatelessWidget {
@@ -30,11 +29,7 @@ class HomeScreen extends StatelessWidget {
                   child: const Text("Features"),
 
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (context) => const FeaturesScreen(),
-                      ),
-                    );
+                    navController.updateButtonNav(Screens.features);
                   }
               ),
 
@@ -42,11 +37,7 @@ class HomeScreen extends StatelessWidget {
                 child: const Text("Settings"),
 
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (context) => const SettingsScreen(),
-                    ),
-                  );
+                  navController.updateButtonNav(Screens.settings);
                 }
               )
             ]

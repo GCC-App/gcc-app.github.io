@@ -8,8 +8,8 @@
 */
 
 
+import "package:campus_companion/backend/nav.dart";
 import "package:flutter/material.dart";
-import "package:campus_companion/frontend/interactive_maps.dart";
 
 class FeaturesScreen extends StatelessWidget {
 
@@ -21,19 +21,34 @@ class FeaturesScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("Features Screen")),
 
       body: Center(
+        child: Column(
+          children: [
 
-        child: ElevatedButton(
+            ElevatedButton(
+                child: const Text("Home Screen"),
 
-          child: const Text("Interactive Maps"),
+                onPressed: () {
+                  navController.updateButtonNav(Screens.home);
+                }
+            ),
 
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (context) => const InteractiveMapsScreen(),
-              ),
-            );
-          }
-        )
+            ElevatedButton(
+
+              child: const Text("Interactive Maps"),
+
+                onPressed: () {
+                  navController.updateButtonNav(Screens.interactiveMaps);
+                }
+            ),
+
+          ElevatedButton(
+          child: const Text("Settings"),
+
+            onPressed: () {
+              navController.updateButtonNav(Screens.settings);
+            }
+          )
+        ])
       )
     );
   }

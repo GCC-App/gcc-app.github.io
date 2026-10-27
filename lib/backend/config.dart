@@ -11,42 +11,69 @@
 
 import 'package:flutter/material.dart';
 
-abstract class AppStyles {
 
-  static var seedColor = Colors.tealAccent;
-  static var colorMode = Brightness.light;
-  static var contrastLevel = 0.0;
+@immutable
+class AppStyles {
 
-  static const minContrastLevel = -1.0;
-  static const maxContrastLevel = 1.0;
+  static final double minContrastLevel = -1.0;
+  static final double maxContrastLevel = 1.0;
 
-  static var titleStyle = TextStyle (
-    fontSize : 32,
-    fontWeight : FontWeight.bold
+  final Color seedColor;
+  final Brightness colorMode;
+  final double contrastLevel;
+
+  static const TextStyle titleStyle = TextStyle (
+      fontSize : 32,
+      fontWeight : FontWeight.bold
   );
 
-  static var headerStyle = TextStyle (
-    fontSize : 24,
-    fontWeight: FontWeight.bold
+  static const TextStyle headerStyle = TextStyle (
+      fontSize : 24,
+      fontWeight: FontWeight.bold
   );
 
-  static var bodyStyle = TextStyle (
+  static const TextStyle bodyStyle = TextStyle (
     fontSize : 16,
   );
 
-  static var captionStyle = TextStyle (
-    fontSize : 16,
-    fontStyle : FontStyle.italic
+  static const TextStyle captionStyle = TextStyle (
+      fontSize : 16,
+      fontStyle : FontStyle.italic
   );
 
-  static ColorScheme colorScheme = ColorScheme.fromSeed(
+  // Constant constructor
+  const AppStyles ({
+
+    this.seedColor = Colors.tealAccent,
+    this.colorMode = Brightness.light,
+    this.contrastLevel = 0.0,
+
+  });
+
+  // Copy a new instance to change attributes
+  AppStyles copyWith({
+
+    Color? seedColor,
+    Brightness? colorMode,
+    double? contrastLevel
+
+  }) {
+
+    return AppStyles (
+      seedColor: seedColor ?? this.seedColor,
+      colorMode: colorMode ?? this.colorMode,
+      contrastLevel: contrastLevel ?? this.contrastLevel
+    );
+  }
+
+  ColorScheme get colorScheme => ColorScheme.fromSeed(
 
       seedColor: seedColor,
       brightness: colorMode,
       contrastLevel: contrastLevel
   );
 
-  static TextTheme textTheme = TextTheme(
+  TextTheme get textTheme => TextTheme(
 
     displayLarge: titleStyle,
     displayMedium: headerStyle,
@@ -55,51 +82,64 @@ abstract class AppStyles {
     labelSmall: captionStyle
   );
 
-  static AppBarTheme appBarTheme = AppBarTheme(
+  AppBarTheme get appBarTheme => AppBarTheme(
 
-    backgroundColor: colorScheme.primary,
-    foregroundColor: colorScheme.onPrimary,
+  backgroundColor: colorScheme.primary,
+  foregroundColor: colorScheme.onPrimary,
 
-    titleTextStyle: TextTheme().displayLarge,
+  titleTextStyle: TextTheme().displayLarge,
   );
 
-  static ElevatedButtonThemeData buttonTheme = ElevatedButtonThemeData(
+  ElevatedButtonThemeData get buttonTheme => ElevatedButtonThemeData(
 
     style: ElevatedButton.styleFrom(
 
-      backgroundColor: colorScheme.primaryContainer,
-      foregroundColor: colorScheme.onPrimaryContainer
+    backgroundColor: colorScheme.primaryContainer,
+    foregroundColor: colorScheme.onPrimaryContainer
 
     )
+  );
+
+  ThemeData get appTheme => ThemeData(
+
+    colorScheme: colorScheme,
+    textTheme: textTheme,
+    appBarTheme: appBarTheme,
+    elevatedButtonTheme: buttonTheme
+
   );
 }
 
 
-final ValueNotifier<ThemeData> themeNotifier = ValueNotifier<ThemeData>(
-    ThemeData(
+class StylesController extends ValueNotifier<AppStyles> {
 
-        colorScheme: AppStyles.colorScheme,
-        textTheme: AppStyles.textTheme,
-        appBarTheme: AppStyles.appBarTheme,
-        elevatedButtonTheme: AppStyles.buttonTheme
+  StylesController(super.value);
 
-    )
-);
+  // Methods to change theme
+  void isDarkMode(bool isDarkMode) {
+    Brightness newColorMode = isDarkMode ? Brightness.dark : Brightness.light;
+    value =
+        value.copyWith(colorMode: newColorMode);
+  }
 
+  void updateContrast(double newContrastLevel) {
+    value =
+        value.copyWith(contrastLevel: newContrastLevel);
+  }
 
-void updateContrast(double newContrastLevel) {
+  // Chaining shortcuts
+  Color get seedColor => value.seedColor;
+  Brightness get colorMode => value.colorMode;
+  double get contrastLevel => value.contrastLevel;
+  ColorScheme get colorScheme => value.colorScheme;
 
-  AppStyles.colorScheme = ColorScheme.fromSeed(
-      seedColor: AppStyles.seedColor,
-      brightness: AppStyles.colorMode,
-      contrastLevel: newContrastLevel
-  );
+  TextStyle? get titleStyle => value.textTheme.displayLarge;
+  TextStyle? get headerStyle => value.textTheme.displayMedium;
+  TextStyle? get bodyStyle => value.textTheme.displaySmall;
+  TextStyle? get captionStyle => value.textTheme.labelSmall;
 
-  themeNotifier.value = ThemeData(
-
-      colorScheme: AppStyles.colorScheme,
-      textTheme: AppStyles.textTheme,
-      appBarTheme: AppStyles.appBarTheme,
-      elevatedButtonTheme: AppStyles.buttonTheme
-  );
+  ThemeData get appTheme => value.appTheme;
 }
+
+// Controller instance
+final stylesController = StylesController(AppStyles());
