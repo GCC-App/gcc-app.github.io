@@ -10,8 +10,8 @@
 
 
 import "package:flutter/material.dart";
-import "package:campus_companion/frontend/home.dart";
-
+import "package:campus_companion/backend/config.dart";
+import "package:campus_companion/backend/nav.dart";
 
 void main() {
   runApp(const CampusCompanionApp());
@@ -23,11 +23,16 @@ class CampusCompanionApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Campus Companion App",
-      theme: ThemeData(
-      ),
-      home: HomeScreen()
+
+    return ValueListenableBuilder<AppStyles> (valueListenable: stylesController,
+        builder: (context, currentTheme, child) {
+          return MaterialApp(
+
+              title: "Campus Companion App",
+              theme: stylesController.appTheme,
+              home: NavBar(),
+          );
+        }
     );
   }
 }

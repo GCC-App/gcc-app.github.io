@@ -423,7 +423,7 @@ class _BusRoutesScreenState extends State<BusRoutesScreen> {
           ),
           const SizedBox(height: 20),
           DropdownButtonFormField<String>(
-            value: selectedRoute,
+            initialValue: selectedRoute,
             decoration: const InputDecoration(
               labelText: 'Select Route',
               border: OutlineInputBorder(),
