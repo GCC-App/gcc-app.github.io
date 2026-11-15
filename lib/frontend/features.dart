@@ -40,6 +40,14 @@ class FeaturesScreen extends StatelessWidget {
                   navController.updateButtonNav(Screens.interactiveMaps);
                 }
             ),
+            ElevatedButton(
+
+              child: const Text("Meals"),
+
+                onPressed: () {
+                  navController.updateButtonNav(Screens.meals);
+                }
+            ),
 
           ElevatedButton(
           child: const Text("Settings"),
