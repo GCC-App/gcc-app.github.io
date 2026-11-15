@@ -39,6 +39,7 @@ class _MealsScreenState extends State<MealsScreen> {
   @override
   void initState() {
     super.initState();
+    _loadLocations();
   }
 
   // ------------------------------------------------------------
@@ -89,6 +90,19 @@ class _MealsScreenState extends State<MealsScreen> {
       menuError = null;
     });
   }
+
+  void _selectCampus(String? campus) {
+  if (campus == null) return;
+
+  setState(() {
+    selectedCampus = campus;
+    selectedLocation = null;
+    selectedMenuType = null;
+    menuItems = [];
+    selectedFilters.clear();
+    menuError = null;
+  });
+}
 
   // ------------------------------------------------------------
   // LOAD SELECTED MENU
@@ -293,9 +307,24 @@ class _MealsScreenState extends State<MealsScreen> {
 
             const SizedBox(height: 10),
 
-            const Text(
-              'Campus selection temporarily disabled',
-              style: TextStyle(fontSize: 16),
+            DropdownButtonFormField<String>(
+              initialValue: selectedCampus,
+              isExpanded: true,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Choose a campus',
+              ),
+              items: const [
+                DropdownMenuItem(
+                  value: 'Kennesaw',
+                  child: Text('Kennesaw Campus'),
+                ),
+                DropdownMenuItem(
+                  value: 'Marietta',
+                  child: Text('Marietta Campus'),
+                ),
+              ],
+              onChanged: _selectCampus,
             ),
 
             const SizedBox(height: 20),
