@@ -46,3 +46,17 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Nested Flutter project build and cache files
+**/build/
+**/.gradle/
+**/.dart_tool/
+**/local.properties
+**/Flutter/ephemeral/
+**/flutter/ephemeral/
+
+# Local Windows test project created during debugging
+/flutter_windows_test/
+
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh

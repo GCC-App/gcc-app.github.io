@@ -13,7 +13,9 @@ import "package:flutter/material.dart";
 import "package:campus_companion/backend/config.dart";
 import "package:campus_companion/backend/nav.dart";
 
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const CampusCompanionApp());
 }
 
@@ -29,7 +31,7 @@ class CampusCompanionApp extends StatelessWidget {
           return MaterialApp(
 
               title: "Campus Companion App",
-              theme: stylesController.appTheme,
+              theme: currentTheme.appTheme,
               home: NavBar(),
           );
         }
