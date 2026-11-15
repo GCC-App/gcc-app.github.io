@@ -43731,7 +43731,7 @@ A.a8G.prototype={
 y6(){var s=0,r=A.R(t.j),q,p,o,n
 var $async$y6=A.S(function(a,b){if(a===1)return A.O(b,r)
 for(;;)switch(s){case 0:s=3
-return A.M(A.aCY(A.eu("https://ksu.api.nutrislice.com/menu/api/schools",0,null),null),$async$y6)
+return A.M(A.aCY(A.eu("https://campus-companion-nutrislice.asteratedofficial.workers.dev/menu/api/schools",0,null),null),$async$y6)
 case 3:o=b
 n=o.b
 if(n!==200)throw A.h(A.cO("Failed to load dining locations: "+n))
@@ -43747,7 +43747,7 @@ akU(a,b,c){var s=0,r=A.R(t.z),q,p,o
 var $async$y7=A.S(function(d,e){if(d===1)return A.O(e,r)
 for(;;)switch(s){case 0:p=t.N
 s=3
-return A.M(A.aCY(A.eu("https://ksu.api.nutrislice.com/menu/api/weeks/school/"+b+"/menu-type/"+c+"/"+A.t7(a)+"/"+A.mo(a)+"/"+A.kC(a),0,null),A.F(["Accept","application/json"],p,p)),$async$y7)
+return A.M(A.aCY(A.eu("https://campus-companion-nutrislice.asteratedofficial.workers.dev/menu/api/weeks/school/"+b+"/menu-type/"+c+"/"+A.t7(a)+"/"+A.mo(a)+"/"+A.kC(a),0,null),A.F(["Accept","application/json"],p,p)),$async$y7)
 case 3:o=e
 p=o.b
 if(p===204){q=null
