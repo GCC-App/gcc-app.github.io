@@ -5,7 +5,7 @@ import '../models/nutrislice_location.dart';
 
 class NutrisliceService {
   static const String baseUrl =
-      'https://ksu.api.nutrislice.com';
+    'https://campus-companion-nutrislice.asteratedofficial.workers.dev';
 
   /// Retrieves all available KSU dining locations.
   Future<List<dynamic>> fetchDiningLocations() async {
