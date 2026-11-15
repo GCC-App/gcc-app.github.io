@@ -10,6 +10,7 @@
 
 import "package:flutter/material.dart";
 import "package:campus_companion/backend/config.dart";
+import 'package:flutter/cupertino.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -52,19 +53,16 @@ class SettingsScreenState extends State<SettingsScreen> {
             Text("Change Contrast Level:",
                 style: stylesController.titleStyle),
 
-            Slider(
-
+            CupertinoSlider(
               value: stylesController.contrastLevel,
               min: AppStyles.minContrastLevel,
               max: AppStyles.maxContrastLevel,
-
               onChanged: (double newValue) {
                 setState(() {
                   stylesController.updateContrast(newValue);
                 });
-              }
+              },
             )
-
           ]
 
         )

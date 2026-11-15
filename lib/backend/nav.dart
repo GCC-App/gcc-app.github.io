@@ -10,12 +10,13 @@
 import 'package:campus_companion/frontend/features.dart';
 import 'package:campus_companion/frontend/home.dart';
 import 'package:campus_companion/frontend/interactive_maps.dart';
+import 'package:campus_companion/frontend/meals.dart';
 import 'package:campus_companion/frontend/settings.dart';
 import 'package:flutter/material.dart';
 
 
 // Use this when setting the index
-enum Screens {home, features, interactiveMaps, settings}
+enum Screens {home, features, interactiveMaps, meals, settings}
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -31,7 +32,8 @@ class NavBarState extends State<NavBar> {
     HomeScreen(),
     FeaturesScreen(),
     InteractiveMapsScreen(),
-    SettingsScreen()
+    MealsScreen(),
+    SettingsScreen(),
   ];
 
   @override
@@ -52,12 +54,7 @@ class NavBarState extends State<NavBar> {
           selectedIndex: currIndex,
 
           onDestinationSelected: (int newIndex) {
-
             navController.value = newIndex;
-
-            setState(() {
-              currIndex = newIndex;
-            });
           },
 
           // Icons and labels
@@ -82,6 +79,12 @@ class NavBarState extends State<NavBar> {
             ),
 
             NavigationDestination(
+                icon: Icon(Icons.restaurant_outlined),
+                selectedIcon: Icon(Icons.restaurant),
+                label: "Meals",
+              ),
+
+            NavigationDestination(
                 icon: Icon(Icons.settings_outlined),
                 selectedIcon: Icon(Icons.settings),
                 label: "Settings"
@@ -103,7 +106,8 @@ class NavController extends ValueNotifier<int> {
     Screens.home : 0,
     Screens.features : 1,
     Screens.interactiveMaps : 2,
-    Screens.settings : 3
+    Screens.meals : 3,
+    Screens.settings : 4
   };
 
   // Use this method when using buttons to link to another screen.
