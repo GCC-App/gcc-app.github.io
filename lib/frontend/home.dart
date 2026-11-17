@@ -9,6 +9,7 @@
 */
 
 
+import "package:campus_companion/backend/config.dart";
 import "package:flutter/material.dart";
 import "package:campus_companion/backend/nav.dart";
 
@@ -19,7 +20,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Home Screen")),
+        appBar: stylesController.createAppBar("Home Screen"),
 
         body: Center(
           child: Column(

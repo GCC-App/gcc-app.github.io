@@ -8,6 +8,7 @@
 */
 
 
+import "package:campus_companion/backend/config.dart";
 import "package:campus_companion/backend/nav.dart";
 import "package:flutter/material.dart";
 
@@ -18,7 +19,7 @@ class FeaturesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Features Screen")),
+      appBar: stylesController.createAppBar("Features Screen"),
 
       body: Center(
         child: Column(

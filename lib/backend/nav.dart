@@ -15,7 +15,12 @@ import 'package:flutter/material.dart';
 
 
 // Use this when setting the index
-enum Screens {home, features, interactiveMaps, settings}
+enum Screens {
+  home,
+  features,
+  interactiveMaps,
+  settings
+}
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -56,7 +61,14 @@ class NavBarState extends State<NavBar> {
             navController.value = newIndex;
 
             setState(() {
-              currIndex = newIndex;
+
+              // Update back button stack
+              if (currIndex != newIndex) {
+
+                navController._screenHistoryStack.add(newIndex);
+                currIndex = newIndex;
+              }
+
             });
           },
 
@@ -98,6 +110,8 @@ class NavBarState extends State<NavBar> {
 class NavController extends ValueNotifier<int> {
   NavController([super.value = 0]);
 
+  final List<int> _screenHistoryStack = [0];
+
   final Map<Screens, int> _screenToIndexMap = {
 
     Screens.home : 0,
@@ -108,7 +122,25 @@ class NavController extends ValueNotifier<int> {
 
   // Use this method when using buttons to link to another screen.
   void updateButtonNav(Screens screen) {
+
+    _screenHistoryStack.add(value);
     value = _screenToIndexMap[screen]!;
+  }
+
+  // Method for the back button in the AppBar in AppStyles in config.dart.
+  Screens popLastScreen() {
+
+    // If there is only one element in stack, do not remove it.
+    int lastScreenIndex;
+    if (_screenHistoryStack.length > 1 && _screenHistoryStack.last != value) {
+      lastScreenIndex = _screenHistoryStack.removeLast();
+
+    } else {
+      lastScreenIndex = _screenHistoryStack.last;
+    }
+
+    return _screenToIndexMap.keys.firstWhere(
+    (x) => _screenToIndexMap[x] == lastScreenIndex);
   }
 }
 

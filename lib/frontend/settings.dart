@@ -25,7 +25,7 @@ class SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Settings Screen")),
+      appBar: stylesController.createAppBar("Settings Screen"),
 
       body: Center (
         child: Column(
@@ -34,6 +34,8 @@ class SettingsScreenState extends State<SettingsScreen> {
             Text("TODO: Clear User Data Button",
                 style:
                   stylesController.titleStyle?.copyWith(color: Colors.red)),
+
+            // Dark mode switch
             Text("Enable Dark Mode:",
                 style: stylesController.titleStyle),
 
@@ -49,7 +51,226 @@ class SettingsScreenState extends State<SettingsScreen> {
               },
             ),
 
-            Text("Change Contrast Level:",
+
+            // Change Color text fields
+            //
+            // // R value
+            // ConstrainedBox(
+            //
+            //  constraints: const BoxConstraints(maxWidth: 200),
+            //
+            //  child: TextFormField(
+            //
+            //    initialValue: AppStyles.defaultColorR.toString(),
+            //
+            //    decoration: InputDecoration(
+            //      border: OutlineInputBorder(),
+            //      labelText: "R value",
+            //    ),
+            //
+            //    // Only allow integer input
+            //    keyboardType: TextInputType.number,
+            //    inputFormatters: <TextInputFormatter>[
+            //      FilteringTextInputFormatter.digitsOnly
+            //    ],
+            //
+            //    autovalidateMode: AutovalidateMode.onUserInteraction,
+            //    validator: (value) {
+            //
+            //     if (value == null  || value.isEmpty) {
+            //       return "Enter a value";
+            //
+            //     } else {
+            //       int intValue = int.parse(value);
+            //
+            //       // Integer input does not allow negative numbers.
+            //       if (intValue > 255) {
+            //         return "Invalid RGB value";
+            //       }
+            //     }
+            //
+            //     return null;
+            //    },
+            //
+            //    onChanged: (value) {
+            //
+            //      final intValue = int.tryParse(value);
+            //      if (intValue != null) {
+            //        setState(() {
+            //         stylesController.changeR(intValue);
+            //        });
+            //      }
+            //    }
+            //
+            //
+            //  ),
+            // ),
+            //
+            // // G value
+            // ConstrainedBox(
+            //
+            //   constraints: const BoxConstraints(maxWidth: 200),
+            //
+            //   child: TextFormField(
+            //
+            //       initialValue: AppStyles.defaultColorR.toString(),
+            //
+            //       decoration: InputDecoration(
+            //         border: OutlineInputBorder(),
+            //         labelText: "G value",
+            //       ),
+            //
+            //       // Only allow integer input
+            //       keyboardType: TextInputType.number,
+            //       inputFormatters: <TextInputFormatter>[
+            //         FilteringTextInputFormatter.digitsOnly
+            //       ],
+            //
+            //       autovalidateMode: AutovalidateMode.onUserInteraction,
+            //       validator: (value) {
+            //
+            //         if (value == null  || value.isEmpty) {
+            //           return "Enter a value";
+            //
+            //         } else {
+            //           int intValue = int.parse(value);
+            //
+            //           // Integer input does not allow negative numbers.
+            //           if (intValue > 255) {
+            //             return "Invalid RGB value";
+            //           }
+            //         }
+            //
+            //         return null;
+            //       },
+            //
+            //       onChanged: (value) {
+            //
+            //         final intValue = int.tryParse(value);
+            //         if (intValue != null) {
+            //           setState(() {
+            //             stylesController.changeG(intValue);
+            //           });
+            //         }
+            //       }
+            //
+            //
+            //   ),
+            // ),
+            //
+            // // B value
+            // ConstrainedBox(
+            //
+            //   constraints: const BoxConstraints(maxWidth: 200),
+            //
+            //   child: TextFormField(
+            //
+            //       initialValue: AppStyles.defaultColorR.toString(),
+            //
+            //       decoration: InputDecoration(
+            //         border: OutlineInputBorder(),
+            //         labelText: "B value",
+            //       ),
+            //
+            //       // Only allow integer input
+            //       keyboardType: TextInputType.number,
+            //       inputFormatters: <TextInputFormatter>[
+            //         FilteringTextInputFormatter.digitsOnly
+            //       ],
+            //
+            //       autovalidateMode: AutovalidateMode.onUserInteraction,
+            //       validator: (value) {
+            //
+            //         if (value == null  || value.isEmpty) {
+            //           return "Enter a value";
+            //
+            //         } else {
+            //           int intValue = int.parse(value);
+            //
+            //           // Integer input does not allow negative numbers.
+            //           if (intValue > 255) {
+            //             return "Invalid RGB value";
+            //           }
+            //         }
+            //
+            //         return null;
+            //       },
+            //
+            //       onChanged: (value) {
+            //
+            //         final intValue = int.tryParse(value);
+            //         if (intValue != null) {
+            //           setState(() {
+            //             stylesController.changeB(intValue);
+            //           });
+            //         }
+            //       }
+            //
+            //
+            //   ),
+            // ),
+
+            // Change R slider
+            Text("R value:", style: stylesController.titleStyle),
+
+            Slider(
+
+              value: stylesController.colorR.toDouble(),
+              min: AppStyles.minRGBValue.toDouble(),
+              max: AppStyles.maxRGBValue.toDouble(),
+
+              divisions: AppStyles.maxRGBValue,
+              label: stylesController.colorR.toString(),
+
+              onChanged: (double newValue) {
+                setState(() {
+                  stylesController.updateR(newValue.round());
+                });
+              }
+            ),
+
+            // Change G slider
+            Text("G value:", style: stylesController.titleStyle),
+
+            Slider(
+
+                value: stylesController.colorG.toDouble(),
+                min: AppStyles.minRGBValue.toDouble(),
+                max: AppStyles.maxRGBValue.toDouble(),
+
+                divisions: AppStyles.maxRGBValue,
+                label: stylesController.colorG.toString(),
+
+                onChanged: (double newValue) {
+                  setState(() {
+                    stylesController.updateG(newValue.round());
+                  });
+                }
+            ),
+
+
+            // Change B slider
+            Text("B value:", style: stylesController.titleStyle),
+
+            Slider(
+
+                value: stylesController.colorB.toDouble(),
+                min: AppStyles.minRGBValue.toDouble(),
+                max: AppStyles.maxRGBValue.toDouble(),
+
+                divisions: AppStyles.maxRGBValue,
+                label: stylesController.colorB.toString(),
+
+                onChanged: (double newValue) {
+                  setState(() {
+                    stylesController.updateB(newValue.round());
+                  });
+                }
+            ),
+
+
+            // Change contrast level slider
+            Text("Contrast Level:",
                 style: stylesController.titleStyle),
 
             Slider(
@@ -57,6 +278,9 @@ class SettingsScreenState extends State<SettingsScreen> {
               value: stylesController.contrastLevel,
               min: AppStyles.minContrastLevel,
               max: AppStyles.maxContrastLevel,
+
+              divisions: 1000,
+              label: stylesController.contrastLevel.toStringAsFixed(3),
 
               onChanged: (double newValue) {
                 setState(() {
