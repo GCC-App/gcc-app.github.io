@@ -32,9 +32,9 @@ class SettingsScreenState extends State<SettingsScreen> {
         child: Column(
 
           children: [
-            Text("TODO: Clear User Data Button",
-                style:
-                  stylesController.titleStyle?.copyWith(color: Colors.red)),
+            // Text("TODO: Clear User Data Button",
+            //     style:
+            //       stylesController.titleStyle?.copyWith(color: Colors.red)),
             Text("Enable Dark Mode:",
                 style: stylesController.titleStyle),
 
